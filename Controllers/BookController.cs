@@ -87,11 +87,30 @@ namespace EnesCanUyar_Odev1_BooksApi.Controllers
                 return NotFound("Book is not here.");
             }
 
-            exists.KitapSeriNo = book.KitapSeriNo; 
+            exists.KitapSeriNo = book.KitapSeriNo;
             exists.KitapAdi = book.KitapAdi;
             exists.SayfaSayisi = book.SayfaSayisi;
             exists.Yazari = book.Yazari;
 
+            //return all books to show the book is updated
+            return Ok(books);
+        }
+
+        //Delete a book by using id from body
+        [HttpDelete]
+        public ActionResult DeleteBookById([FromBody] int id)
+        {
+            //check if the book is exists
+            Book existBook = books.FirstOrDefault(q => q.Id == id);
+
+            if (existBook == null)
+            {
+                return NotFound("Book is not here.");
+            }
+
+            books.Remove(existBook);
+
+            //retrun all books to show the book is deleted
             return Ok(books);
         }
     }
