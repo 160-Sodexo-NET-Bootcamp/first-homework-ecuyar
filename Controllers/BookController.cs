@@ -59,5 +59,40 @@ namespace EnesCanUyar_Odev1_BooksApi.Controllers
 
             return Ok(book);
         }
+
+        //Add book by using post request
+        [HttpPost("addBook")]
+        public ActionResult AddBook([FromBody] Book book)
+        {
+            bool isExists = books.Any(q => q.Id == book.Id);
+
+            if (!isExists)
+            {
+                books.Add(book);
+                return Ok(books);
+            }
+            return Unauthorized("Book exists.");
+        }
+
+        //Update book by using put request.
+        //I used whole book object because is hasn't lots of properties.
+        [HttpPut]
+        public ActionResult UpdateBook([FromBody] Book book)
+        {
+            //check the book by using its id property
+            Book exists = books.FirstOrDefault(q => q.Id == book.Id);
+
+            if (exists is null)
+            {
+                return NotFound("Book is not here.");
+            }
+
+            exists.KitapSeriNo = book.KitapSeriNo; 
+            exists.KitapAdi = book.KitapAdi;
+            exists.SayfaSayisi = book.SayfaSayisi;
+            exists.Yazari = book.Yazari;
+
+            return Ok(books);
+        }
     }
 }
